@@ -50,6 +50,8 @@ routes.delete('/giveitems/:id', ItemToGiveController.delete);
 
  /** To make a transaction, you should access the api:
   * /transaction/{type of the item(get or give)}/{item_id}
+  * Items to give post body: {"date": dayOfTheTransaction, "daysNeeded": daysNeeded}
+  * Items to get post body: {"date": dayOfTheTransaction}
   */
 routes.get('/transaction', TransactionController.index);
 routes.post('/transaction/get/:id', TransactionController.transactionToGet);

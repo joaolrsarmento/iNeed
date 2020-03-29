@@ -45,8 +45,8 @@ module.exports = {
 
         
         await connection('transactions').insert({
-            originUsername,
-            destinationUsername,
+            clientUsername,
+            ownerUsername,
             date,
             value
         });
@@ -56,27 +56,26 @@ module.exports = {
     async transactionToGive(request, response){
         const clientUsername = request.headers.authorization;
         const {id} = request.params;
-        const {daysNeeded} = request.body;
-        const {date} = request.body;
+        const {daysNeeded, date} = request.body;
 
         const item = await connection(`itemsToGive`)
         .where('id', id)
         .select('*')
         .first();
 
+
         const ownerUsername = item.username;
         let value = item.valuePerDay * daysNeeded;
 
         let clientUser = await connection('persons')
-        .where('username', originUsername)
+        .where('username', clientUsername)
         .select('balance')
         .first();
 
         let ownerUser = await connection('persons')
-        .where('username', destinationUsername)
+        .where('username', ownerUsername)
         .select('balance')
         .first();
-
 
         await connection('persons')
         .where('username', clientUsername)
@@ -91,8 +90,8 @@ module.exports = {
 
         
         await connection('transactions').insert({
-            originUsername,
-            destinationUsername,
+            clientUsername,
+            ownerUsername,
             date,
             value
         });
