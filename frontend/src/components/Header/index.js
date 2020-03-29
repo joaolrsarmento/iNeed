@@ -17,15 +17,15 @@ export default function Header(){
                     Items disponíveis
                 </Link>
                 <Link className="header-link">
-                    Meus items
+                    Pesquisar
                 </Link>
             </div>
             <div className="header-list-options">
                 <Link className="header-link">
-                    Pesquisar
+                    Meus items
                 </Link>
                 <Link className="header-link">
-                    Perfil
+                    Meu perfil
                 </Link>
                 <Link className="header-link">
                     Sair
