@@ -11,6 +11,8 @@ exports.up = function(knex) {
       table.string('uf', 2).notNullable();
       table.string('phone').notNullable();
       table.string('zip_code').notNullable();
+
+      table.decimal('balance').notNullable();
   })
 };
 

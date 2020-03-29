@@ -18,8 +18,10 @@ module.exports = {
             city,
             uf,
             zip_code,
-            house_number
+            house_number,
+            balance = 0
         } = request.body;
+
 
         await connection('persons').insert({
             username,
@@ -31,7 +33,8 @@ module.exports = {
             city,
             uf,
             zip_code,
-            house_number
+            house_number,
+            balance
         });
 
         return response.json({username});
