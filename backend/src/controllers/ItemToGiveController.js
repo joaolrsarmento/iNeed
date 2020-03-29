@@ -3,10 +3,10 @@ const connection = require('../database/connection');
 module.exports = {
     async index(request, response) {
 
-        const itemsToGet = await connection('itemsToGet')
+        const itemsToGive = await connection('itemsToGive')
             .select('*');
 
-        return response.json(itemsToGet);
+        return response.json(itemsToGive);
     },
     async create(request, response) {
         const username = request.headers.authorization;
@@ -15,23 +15,19 @@ module.exports = {
             title,
             description,
             valuePerDay,
-            daysNeeded,
-            startDate,
-            shouldMailIt,
+            canMailIt,
             city,
             uf
         } = request.body;
 
-        const [id] = await connection('itemsToGet')
+        const [id] = await connection('itemsToGive')
             .insert({
                 title,
                 description,
                 valuePerDay,
-                daysNeeded,
-                startDate,
-                shouldMailIt,
                 city,
                 uf,
+                canMailIt,
                 username
             });
 
@@ -41,7 +37,7 @@ module.exports = {
         const { id } = request.params;
         const username = request.headers.authorization;
 
-        const item = await connection('itemsToGet')
+        const item = await connection('itemsToGive')
             .where('id', id)
             .select('username')
             .first();
@@ -52,7 +48,7 @@ module.exports = {
             });
         }
 
-        await connection('itemsToGet').where('id', id).delete();
+        await connection('itemsToGive').where('id', id).delete();
 
         return response.status(204).send();
     }

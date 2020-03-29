@@ -8,6 +8,9 @@ exports.up = function(knex) {
 
         table.decimal('valuePerDay').notNullable();
 
+        table.string('city').notNullable();
+        table.string('uf', 2).notNullable();
+        
         table.boolean('canMailIt').notNullable();
   
         table.string('username').notNullable();
