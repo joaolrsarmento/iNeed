@@ -1,0 +1,29 @@
+* {
+    background-color: #f0f0f5;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font: 400 15px Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+input, button, textarea {
+    font: 400 18px Roboto, sans-serif;
+}
+
+button {
+    cursor: pointer;
+}
+
+.logo{
+    background-color: #fff;
+    max-width: 135px;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+    margin-right: 20px;
+}
