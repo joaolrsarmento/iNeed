@@ -5,7 +5,7 @@ const PersonController = require('./controllers/PersonController');
 const LoginController = require('./controllers/LoginController');
 const ItemToGetController = require('./controllers/ItemToGetController');
 const ItemToGiveController = require('./controllers/ItemToGiveController');
-
+const TransactionController = require('./controllers/TransactionController');
 // Router
 const routes = express.Router();
 
@@ -25,7 +25,7 @@ routes.delete('/persons/:username', PersonController.delete);
  */
 routes.post('/login', LoginController.create);
 
-/** ItemsToGet's method:
+/** ItemsToGet's methods:
  * post -> new item to get
  * get -> list items to get
  * delete -> delete item
@@ -34,7 +34,7 @@ routes.get('/getitems', ItemToGetController.index);
 routes.post('/getitems', ItemToGetController.create);
 routes.delete('/getitems/:id', ItemToGetController.delete);
 
-/** ItemsToGet's method:
+/** ItemsToGet's methods:
  * post -> new item to get
  * get -> list items to get
  * delete -> delete item
@@ -42,6 +42,13 @@ routes.delete('/getitems/:id', ItemToGetController.delete);
 routes.get('/giveitems', ItemToGiveController.index);
 routes.post('/giveitems', ItemToGiveController.create);
 routes.delete('/giveitems/:id', ItemToGiveController.delete);
+
+/** Transaction's methods:
+ * post -> make a transaction
+ * get -> list transactions
+ */
+routes.get('/transaction', TransactionController.index);
+routes.post('/transaction/:id', TransactionController.create);
 
 // 
 module.exports = routes;
