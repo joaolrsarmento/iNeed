@@ -18,8 +18,8 @@ module.exports = {
         .select('*')
         .first();
 
-        console.log(item)
         const destinationUsername = item.username;
+        let value = item.valuePerDay * item.daysNeeded;
 
         let originUser = await connection('persons')
         .where('username', originUsername)
@@ -31,10 +31,17 @@ module.exports = {
         .select('balance')
         .first();
 
-        destinationUser.balance += item.valuePerDay * item.daysNeeded;
-        originUser.balance -= item.valuePerDay * item.daysNeeded;
 
-        value = item.valuePerDay * item.daysNeeded;
+        await connection('persons')
+        .where('username', originUsername)
+        .update('balance', originUser.balance - value)
+        .then(() => {});
+
+        await connection('persons')
+        .where('username', destinationUsername)
+        .update('balance', destinationUser.balance + value)
+        .then(() => {});
+
 
         
         await connection('transactions').insert({
