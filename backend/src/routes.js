@@ -34,7 +34,7 @@ routes.get('/getitems', ItemToGetController.index);
 routes.post('/getitems', ItemToGetController.create);
 routes.delete('/getitems/:id', ItemToGetController.delete);
 
-/** ItemsToGet's methods:
+/** ItemsToGive's methods:
  * post -> new item to get
  * get -> list items to get
  * delete -> delete item
@@ -49,10 +49,11 @@ routes.delete('/giveitems/:id', ItemToGiveController.delete);
  */
 
  /** To make a transaction, you should access the api:
-  * /transaction/{item_id}?type={type of the item (get or give)}
+  * /transaction/{type of the item(get or give)}/{item_id}
   */
 routes.get('/transaction', TransactionController.index);
-routes.post('/transaction/:id', TransactionController.create);
+routes.post('/transaction/get/:id', TransactionController.transactionToGet);
+routes.post('/transaction/give/:id', TransactionController.transactionToGive);
 
 // 
 module.exports = routes;
