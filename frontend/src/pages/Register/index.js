@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+import logoImg from '../../assets/logoSimple.png';
 import instaLogo from '../../assets/instalogo.png';
 import faceLogo from '../../assets/facelogo.png';
 
@@ -30,6 +31,7 @@ export default function Register() {
                 <div class="overlay-container">
                     <div class="overlay">
                         <div class="overlay-panel overlay-right">
+                            <img src= {logoImg} alt="logo"/>
                             <h1>Welcome Back!</h1>
                             <p>To keep connected with us please login with your personal info</p>
                             <Link to = "/"><button class="ghost" id="signIn">Sign In</button></Link>
