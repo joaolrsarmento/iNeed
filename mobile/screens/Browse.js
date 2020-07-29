@@ -9,12 +9,12 @@ import {
 
 import { Card, Badge, Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
-
+import Plus from './Plus.js'
 const { width } = Dimensions.get("window");
 
 class Browse extends Component {
   state = {
-    active: "Products",
+    active: "I need",
     categories: []
   };
 
@@ -51,13 +51,13 @@ class Browse extends Component {
   render() {
     const { profile, navigation } = this.props;
     const { categories } = this.state;
-    const tabs = ["Products", "Inspirations", "Shop"];
+    const tabs = ["I Need", "They need"];
 
     return (
       <Block>
         <Block flex={false} row center space="between" style={styles.header}>
           <Text h1 bold>
-            Browse
+            Produtos
           </Text>
           <Button onPress={() => navigation.navigate("Settings")}>
             <Image source={profile.avatar} style={styles.avatar} />
@@ -76,7 +76,7 @@ class Browse extends Component {
             {categories.map(category => (
               <TouchableOpacity
                 key={category.name}
-                onPress={() => navigation.navigate("Explore", { category })}
+                onPress={() => navigation.navigate("Plus")}
               >
                 <Card center middle shadow style={styles.category}>
                   <Badge
@@ -97,6 +97,15 @@ class Browse extends Component {
             ))}
           </Block>
         </ScrollView>
+    <TouchableOpacity
+    activeOpacity={0.7}
+    onPress={() => navigation.navigate("Plus")}
+    style={styles.TouchableOpacityStyle}>
+        <Image
+    source={require('../assets/plus_icon.png')}
+    style={styles.FloatingButtonStyle}
+    />
+    </TouchableOpacity>
       </Block>
     );
   }
@@ -141,5 +150,20 @@ const styles = StyleSheet.create({
     minWidth: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
     maxWidth: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
     maxHeight: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2
-  }
+  },
+  TouchableOpacityStyle: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 30,
+    bottom: 30,
+  },
+
+  FloatingButtonStyle: {
+    resizeMode: 'contain',
+    width: 50,
+    height: 50
+  },
 });
