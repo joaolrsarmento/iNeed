@@ -264,9 +264,7 @@ class Welcome extends Component {
 
 Welcome.defaultProps = {
   illustrations: [
-    { id: 1, source: require("../assets/images/illustration_1.png") },
-    { id: 2, source: require("../assets/images/illustration_2.png") },
-    { id: 3, source: require("../assets/images/illustration_3.png") }
+    { id: 1, source: require("../assets/images/logoSimple.jpg") },
   ]
 };
 
