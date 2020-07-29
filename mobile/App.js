@@ -25,7 +25,8 @@ const images = [
   require("./assets/images/explore_4.png"),
   require("./assets/images/explore_5.png"),
   require("./assets/images/explore_6.png"),
-  require("./assets/images/avatar.png")
+  require("./assets/images/avatar.png"),
+  require("./assets/images/logoSimple.jpg")
 ];
 
 export default class App extends React.Component {
