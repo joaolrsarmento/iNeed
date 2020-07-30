@@ -11,6 +11,8 @@ import {
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
 
+import api from '../services/api';
+
 export default class SignUp extends Component {
   state = {
     email: null,
@@ -25,7 +27,7 @@ export default class SignUp extends Component {
     loading: false
   };
 
-  handleSignUp() {
+  async handleSignUp() {
     const { navigation } = this.props;
     const { email, username, password, first_name, last_name, phone, city, uf, zip_code, house_number } = this.state;
     const errors = [];
@@ -39,8 +41,15 @@ export default class SignUp extends Component {
     if (!password) errors.push("password");
 
     this.setState({ errors, loading: false });
+    try{
+      const data = {email, username, password, first_name, last_name, phone, city, uf, zip_code, house_number};
+      const response = await api.post(`persons`, data);
+    }catch(err){
+      Alert.alert("Erro!\nTente novamente mais tarde.")
+    }
 
     if (!errors.length) {
+      
       Alert.alert(
         "Success!",
         "Your account has been created",

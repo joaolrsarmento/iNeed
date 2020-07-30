@@ -3,19 +3,24 @@ import {
   ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
-  StyleSheet
+  StyleSheet,
+  Image
 } from "react-native";
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
+
+import logoComplete from '../assets/images/logoComplete.png';
+
+import api from '../services/api';
 
 const VALID_EMAIL = "contact@react-ui-kit.com";
 const VALID_PASSWORD = "subscribe";
 
 export default class Login extends Component {
   state = {
-    email: VALID_EMAIL,
-    password: VALID_PASSWORD,
+    email: null,
+    password: null,
     errors: [],
     loading: false
   };
