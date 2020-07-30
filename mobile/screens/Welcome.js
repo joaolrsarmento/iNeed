@@ -47,8 +47,7 @@ class Welcome extends Component {
               height={24}
               style={{ marginBottom: theme.sizes.base }}
             >
-              1. Your use of the Service is at your sole risk. The service is
-              provided on an "as is" and "as available" basis.
+              1. When use this app, you accept the possibility of accessing your phone data.
             </Text>
             <Text
               caption
@@ -56,8 +55,8 @@ class Welcome extends Component {
               height={24}
               style={{ marginBottom: theme.sizes.base }}
             >
-              2. Support for Expo services is only available in English, via
-              e-mail.
+              2. Support for iNeed is only available in English, via
+              e-mail: support@ineed.com
             </Text>
             <Text
               caption
@@ -65,7 +64,7 @@ class Welcome extends Component {
               height={24}
               style={{ marginBottom: theme.sizes.base }}
             >
-              3. You understand that Expo uses third-party vendors and hosting
+              3. You understand that iNeed uses third-party vendors and hosting
               partners to provide the necessary hardware, software, networking,
               storage, and related technology required to run the Service.
             </Text>
@@ -77,7 +76,7 @@ class Welcome extends Component {
             >
               4. You must not modify, adapt or hack the Service or modify
               another website so as to falsely imply that it is associated with
-              the Service, Expo, or any other Expo service.
+              iNeed.
             </Text>
             <Text
               caption
@@ -85,12 +84,12 @@ class Welcome extends Component {
               height={24}
               style={{ marginBottom: theme.sizes.base }}
             >
-              5. You may use the Expo Pages static hosting service solely as
+              5. You may use the iNeed Pages static hosting service solely as
               permitted and intended to host your organization pages, personal
               pages, or project pages, and for no other purpose. You may not use
-              Expo Pages in violation of Expo's trademark or other rights or in
-              violation of applicable law. Expo reserves the right at all times
-              to reclaim any Expo subdomain without liability to you.
+              iNeed Pages in violation of iNeed's trademark or other rights or in
+              violation of applicable law. iNeed reserves the right at all times
+              to reclaim any iNeed subdomain without liability to you.
             </Text>
             <Text
               caption
@@ -100,7 +99,7 @@ class Welcome extends Component {
             >
               6. You agree not to reproduce, duplicate, copy, sell, resell or
               exploit any portion of the Service, use of the Service, or access
-              to the Service without the express written permission by Expo.
+              to the Service without the express written permission by iNeed.
             </Text>
             <Text
               caption
@@ -121,7 +120,7 @@ class Welcome extends Component {
               style={{ marginBottom: theme.sizes.base }}
             >
               8. Verbal, physical, written or other abuse (including threats of
-              abuse or retribution) of any Expo customer, employee, member, or
+              abuse or retribution) of any iNeed customer, employee, member, or
               officer will result in immediate account termination.
             </Text>
             <Text
