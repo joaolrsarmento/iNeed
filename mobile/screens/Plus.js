@@ -25,7 +25,7 @@ import CheckBox from '@react-native-community/checkbox';
 import DatePicker from 'react-native-datepicker';
 
 const { width, height } = Dimensions.get("window");
-const tabs = ["I Need", "They need"];
+const tabs = ["I need", "They need"];
 
 class Plus extends Component {
 
@@ -35,8 +35,8 @@ class Plus extends Component {
         password: null,
         errors: [],
         loading: false,
-        description: "",
-        valuePerDay: 0,
+        description: null,
+        valuePerDay: null,
         daysNeeded: 0,
         selectedUF:"SP",
         startDate: null,
@@ -44,15 +44,18 @@ class Plus extends Component {
         city: null,
         uf: null,
         show:false,
-        date: new Date(),
+        from: null,
+        until: null,
         iOrThey: 0
     };
 
     selectUF(index, item){
-        this.setState({selectedUF:item.uf})
+        this.setState({uf:item.uf})
     }
 
-    afterSubmit(){
+    afterSubmit = () =>  {
+        const { navigation } = this.props;
+
         this.setState({loading: false});
         const message = ["Logo você terá o seu item em mãos!", "Agora seu item está disponível para emprestar!"]
         if (true) {
@@ -75,11 +78,38 @@ class Plus extends Component {
         const { navigation } = this.props;
         Keyboard.dismiss();
         this.setState({ loading: true });
-
+        const errors = [];
         // check with backend API or with some static data
-        // if (!title) errors.push("email");
-        // if (!username) errors.push("username");
-        // if (!password) errors.push("password");
+        if (this.state.title == null || this.state.title === "") errors.push("title");
+        if (this.state.description == null || this.state.description === "") errors.push("description");
+        if (this.state.valuePerDay == null || this.state.valuePerDay === "" ) errors.push("valuePerDay");
+        if (this.state.uf == null) errors.push("uf");
+        var days = 0;
+        if(!this.state.iOrThey){
+            if (this.state.until == null) errors.push("until");
+            if (this.state.from == null) errors.push("from");
+            if (this.state.from != null && this.state.until != null) {
+                var partsD1 = this.state.from.split('/');
+                var partsD2 = this.state.until.split('/');
+                var d1 = new Date(partsD1[2], partsD1[1] - 1, partsD1[0]);
+                var d2 = new Date(partsD2[2], partsD2[1] - 1, partsD2[0]);
+                days = Math.floor((d2 - d1) / (1000 * 60 * 60 * 24));
+                if (days < 0) {
+                    errors.push("from");
+                    errors.push("until");
+                }
+                console.log(days);
+                this.setState({daysNeeded: days});
+                console.log("passou aq");
+            }
+        }
+
+        if(errors.length) {
+            this.setState({loading: false, errors: errors});
+            return;
+        }
+        this.setState({errors:errors});
+        console.log (this.state.daysNeeded);
         if(this.state.iOrThey) {
             const url = 'http://192.168.43.23:3333/giveitems/'
             var object = {
@@ -91,7 +121,7 @@ class Plus extends Component {
                 body: JSON.stringify({
                     "title": this.state.title,
                     "description": this.state.description,
-                    "shouldMailIt": this.state.shouldMailIt,
+                    "valuePerDay": this.state.valuePerDay,
                     "city": this.state.city,
                     "uf": this.state.uf,
                     "canMailIt": this.state.mailIt,
@@ -110,16 +140,16 @@ class Plus extends Component {
                 body: JSON.stringify({
                     "title": this.state.title,
                     "description": this.state.description,
-                    "shouldMailIt": this.state.shouldMailIt,
+                    "shouldMailIt": this.state.mailIt,
+                    "valuePerDay": this.state.valuePerDay,
                     "city": this.state.city,
                     "uf": this.state.uf,
-                    "canMailIt": this.state.mailIt,
-                    "startDate": this.state.date.toString(),
-                    "daysNeeded": this.state.daysNeeded
+                    "startDate": this.state.from,
+                    "daysNeeded": days
                 })
             };
             console.log(object)
-            return fetch(url, object).then(response => response.json()).then(this.afterSubmit);
+            return fetch(url, object).then(response => console.log(response.json())).then(this.afterSubmit);
         }
     }
 
@@ -129,7 +159,7 @@ class Plus extends Component {
         return (
             <TouchableOpacity
         key={`tab-${tab}`}
-        onPress={() => this.setState({iOrThey:tabs.indexOf(tab)})}
+        onPress={() => this.setState({iOrThey:tabs.indexOf(tab), errors:[], loading:false})}
         style={[styles.tab, isActive ? styles.active : null]}
     >
     <Text size={16} medium gray={!isActive} secondary={isActive}>
@@ -148,14 +178,16 @@ class Plus extends Component {
          this.setState({show: true});
     };
     renderDates(){
+        const { loading, errors } = this.state;
+        const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
         if(!this.state.iOrThey){
             return(
                 <View>
                 <View style={styles.row}>
                 <Text gray>De</Text>
             <DatePicker
-            style={[{width: 150}]}
-            date={this.state.date}
+            style={[{width: 150}, hasErrors("from")]}
+            date={this.state.from}
             mode="date"
             placeholder="Começando em"
             format="DD/MM/YYYY"
@@ -171,18 +203,19 @@ class Plus extends Component {
                         borderBottomWidth: StyleSheet.hairlineWidth
                 }
             }}
-            onDateChange={(date) => {this.setState({date: date})}}
+            onDateChange={(date) => {this.setState({from: date})}}
             />
                 <Text gray>à</Text>
             <DatePicker
-            style={[{width: 150}]}
-            date={this.state.date}
+                style={[{width: 150}, hasErrors("from")]}
+            date={this.state.until}
             mode="date"
-            placeholder="Começando em"
+            placeholder="Terminando em"
             format="DD/MM/YYYY"
             confirmBtnText="Confirm"
             showIcon= {false}
             cancelBtnText="Cancel"
+                minDate={this.state.from}
             customStyles={{
                 dateInput: {
                     marginLeft: 0,
@@ -192,7 +225,7 @@ class Plus extends Component {
                         borderBottomWidth: StyleSheet.hairlineWidth
                 }
             }}
-            onDateChange={(date) => {this.setState({date: date})}}
+            onDateChange={(date) => {this.setState({until: date})}}
             />
                 </View>
             </View>);
@@ -203,7 +236,7 @@ class Plus extends Component {
         const { navigation } = this.props;
         const { loading, errors } = this.state;
         const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
-        const tabs = ["I Need", "They need"];
+        const tabs = ["I need", "They need"];
 
         return (
             <ScrollView showsVerticalScrollIndicator={false} >
@@ -228,7 +261,7 @@ class Plus extends Component {
         editable
         multiline
         numberOfLines={5}
-        style={[styles.input_description]}
+        style={[styles.input_description, hasErrors("description")]}
         onChangeText={text => this.setState({ description: text })}
         value={this.state.description}
         placeholder="Descrição"
@@ -236,10 +269,10 @@ class Plus extends Component {
             <Input
         number
         label="Valor por dia"
-        error={hasErrors("value")}
-        style={[styles.input, hasErrors("value")]}
-        defaultValue={this.state.value}
-        onChangeText={text => this.setState({ value: text })}
+        error={hasErrors("valuePerDay")}
+        style={[styles.input, hasErrors("valuePerDay")]}
+        defaultValue={this.state.valuePerDay}
+        onChangeText={text => this.setState({ valuePerDay: text })}
         />
         {this.renderDates()}
 
@@ -251,7 +284,9 @@ class Plus extends Component {
         defaultValue={this.state.city}
         onChangeText={text => this.setState({ city: text })}
         />
-        <RNPicker
+            <View style={styles.row}>
+
+            <RNPicker
         dataSource={ufs}
         dummyDataSource={ufs}
         defaultValue={false}
@@ -262,15 +297,15 @@ class Plus extends Component {
         searchBarPlaceHolder={"Search....."}
         showPickerTitle={true}
         searchBarContainerStyle={this.props.searchBarContainerStyle}
-        pickerStyle={styles.pickerStyle}
-        selectedLabel={this.state.selectedUF}
+        pickerStyle={[styles.pickerStyle, hasErrors("uf")]}
+        selectedLabel={this.state.uf}
         placeHolderLabel={"UF"}
         selectLabelTextStyle={styles.selectLabelTextStyle}
         placeHolderTextStyle={styles.placeHolderTextStyle}
         dropDownImageStyle={styles.dropDownImageStyle}
         selectedValue={(index, item) => this.selectUF(index, item)}
         />
-
+            </View>
             <View style={styles.row}>
         <Checkbox
         status={this.state.mailIt ? 'checked' : 'unchecked'}

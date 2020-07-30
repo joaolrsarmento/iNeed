@@ -12,6 +12,7 @@ import Browse from "../screens/Browse";
 import Product from "../screens/Product";
 import Settings from "../screens/Settings";
 import Plus from "../screens/Plus";
+import SingleProduct from "../screens/SingleProduct";
 
 import { theme } from "../constants";
 
@@ -24,7 +25,7 @@ const screens = createStackNavigator(
     Explore,
     Browse,
     Product,
-    Settings,
+    Settings, SingleProduct,
       Plus
   },
   {
