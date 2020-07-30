@@ -9,7 +9,7 @@ module.exports = {
         return response.json(itemsToGive);
     },
     async create(request, response) {
-        const username ="alexandremr01";//request.headers.authorization;
+        const username = request.headers.authorization;
 
         const {
             title,
