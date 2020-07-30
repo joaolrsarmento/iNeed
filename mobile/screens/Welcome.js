@@ -40,7 +40,7 @@ class Welcome extends Component {
             Terms of Service
           </Text>
 
-          <ScrollView style={{ marginVertical: theme.sizes.padding }}>
+          <ScrollView style={{ marginVertical: theme.sizes.padding }} showsVerticalScrollIndicator="false">
             <Text
               caption
               gray
