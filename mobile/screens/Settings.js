@@ -5,6 +5,9 @@ import Slider from "react-native-slider";
 import { Divider, Button, Block, Text, Switch } from "../components";
 import { theme, mocks } from "../constants";
 
+import joaoImg from '../assets/images/joaoImg.png';
+import alexImg from '../assets/images/alexImg.png';
+
 class Settings extends Component {
   state = {
     budget: 850,
@@ -48,6 +51,7 @@ class Settings extends Component {
 
   render() {
     const { profile, editing } = this.state;
+    const { navigation } = this.props;
 
     return (
       <Block>
@@ -56,7 +60,7 @@ class Settings extends Component {
             Settings
           </Text>
           <Button>
-            <Image source={profile.avatar} style={styles.avatar} />
+            <Image source={joaoImg} style={styles.avatar} />
           </Button>
         </Block>
 
@@ -97,7 +101,7 @@ class Settings extends Component {
                 <Text gray2 style={{ marginBottom: 10 }}>
                   E-mail
                 </Text>
-                <Text bold>{profile.email}</Text>
+                <Text bold>joaosarmento@ita.br</Text>
               </Block>
             </Block>
           </Block>
@@ -174,6 +178,12 @@ class Settings extends Component {
               />
             </Block>
           </Block>
+          <Divider />
+          <Button gradient onPress={() => navigation.navigate("Chat")}>
+            <Text center semibold white>
+              My chats
+            </Text>
+          </Button>
         </ScrollView>
       </Block>
     );
@@ -191,6 +201,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.base * 2
   },
   avatar: {
+    borderRadius: theme.sizes.base * 1.1,
     height: theme.sizes.base * 2.2,
     width: theme.sizes.base * 2.2
   },

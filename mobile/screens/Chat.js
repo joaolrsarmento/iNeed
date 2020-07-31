@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, TextInput, TouchableHighlight, Keyboard } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, TextInput, TouchableHighlight, Keyboard, Image } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import AutogrowInput from 'react-native-autogrow-input';
 
+import joaoImg from '../assets/images/joaoImg.png';
+import alexImg from '../assets/images/alexImg.png';
+
+import theme from '../constants/theme';
 
 export default class Chat extends Component {
 
@@ -19,22 +23,27 @@ export default class Chat extends Component {
     }
     messages.push({
         direction: 'left',
+        image: alexImg,
         text: "Hey man, I saw your ad on the surfboard. I need it for 3 days this weeken. Is it available?"
     })
     messages.push({
         direction: 'right',
+        image: joaoImg,
         text: "Yes, it is. Can you come get it at my house? I live nearby Ubatuba's beach. Also, is $10 a day good for you?"
     })
     messages.push({
         direction: 'left',
+        image: alexImg,
         text: "Sure, I can and it seems reasonable. If you are available, I can go get it right away."
     })
     messages.push({
         direction: 'right',
+        image: joaoImg,
         text: "How about 2 hours from now, at Ubatuba's mall in front of the main entrance of the beach?"
     })
     messages.push({
         direction: 'left',
+        image: alexImg,
         text: "Deal. See you soon. I will be wearing a green tshirt and black crocs."
     })
 
@@ -105,7 +114,7 @@ export default class Chat extends Component {
 
     this.state.messages.forEach(function(message, index) {
       messages.push(
-          <MessageBubble key={index} direction={message.direction} text={message.text}/>
+          <MessageBubble key={index}  direction={message.direction} text={message.text}/>
         );
     });
 

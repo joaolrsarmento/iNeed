@@ -14,6 +14,8 @@ import { theme, mocks } from "../constants";
 import Plus from './Plus.js'
 import MyProduct from './MyProduct.js'
 
+import joaoImg from '../assets/images/joaoImg.png';
+
 const { width } = Dimensions.get("window");
 import api from '../services/api';
 
@@ -55,10 +57,6 @@ class Browse extends Component {
         data = response.data;
       } else if (tab == 'My products') {
         response = await api.get(`persons/` + profile.username);
-        console.log(response.data[0]);
-        console.log("and");
-        console.log(response.data[1]);
-        console.log(response);
         data = response.data[0].concat(response.data[1]);
       }
 
@@ -154,7 +152,7 @@ class Browse extends Component {
             Products
           </Text>
           <Button onPress={() => navigation.navigate("Settings")}>
-            <Image source={profile.avatar} style={styles.avatar} />
+            <Image source={joaoImg} style={styles.avatar} />
           </Button>
         </Block>
 
@@ -240,6 +238,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.base * 2
   },
   avatar: {
+    borderRadius: theme.sizes.base * 1.1,
     height: theme.sizes.base * 2.2,
     width: theme.sizes.base * 2.2
   },
