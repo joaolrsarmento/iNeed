@@ -6,6 +6,14 @@ module.exports = {
 
         return response.json(persons);
     },
+    async items(request, response){
+        const {username} = request.params;
+
+        const toGive = await connection('itemsToGive').select('*').where('username', username);
+        const toGet = await connection('itemsToGet').select('*').where('username', username);
+        console.log([toGive, toGet]);
+        return response.json([toGive, toGet]);
+    },
 
     async create(request, response){
         const {

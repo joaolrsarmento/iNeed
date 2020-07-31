@@ -12,7 +12,10 @@ import {  List, ListItem, SearchBar, Avatar } from "react-native-elements";
 import { Card, Badge, Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
 import Plus from './Plus.js'
+import MyProduct from './MyProduct.js'
+
 const { width } = Dimensions.get("window");
+import api from '../services/api';
 
 class Browse extends Component {
   state = {
@@ -24,41 +27,51 @@ class Browse extends Component {
   };
 
   componentDidMount() {
-    this.listProducts();
+    this.props.navigation.addListener('didFocus',  () => {
+      this.listProducts(this.state.active);
+    } );
+
+    this.listProducts("I need");
   }
 
   handleTab = tab => {
-    const { categories } = this.props;
-    const filtered = categories.filter(category =>
-      category.tags.includes(tab.toLowerCase())
-    );
     const tabs = ["I need", "They need", "My products"];
-    this.setState({ active: tab, categories: filtered, iOrTheyNeed: tabs.indexOf(tab) });
-    this.listProducts();
+    this.setState({ active: tab, iOrTheyNeed: tabs.indexOf(tab) ,data:[]});
+    this.listProducts(tab);
   };
 
-  listProducts(){
+  async listProducts(tab){
+    const { profile, navigation } = this.props;
     this.setState({ loading: true });
     var url='';
-    if (this.state.active=='I need'){
-        url = 'http://192.168.43.23:3333/getitems/';
-      } else{
-        url = 'http://192.168.43.23:3333/giveitems/';
+    var response;
+    var data;
+    try {
+      if (tab == 'I need') {
+        response = await api.get(`getitems`);
+        data = response.data;
+      } else if (tab == 'They need') {
+        response = await api.get(`giveitems`);
+        data = response.data;
+      } else if (tab == 'My products') {
+        response = await api.get(`persons/` + profile.username);
+        console.log(response.data[0]);
+        console.log("and");
+        console.log(response.data[1]);
+        console.log(response);
+        data = response.data[0].concat(response.data[1]);
       }
-      console.log(url);
-      fetch(url)
-          .then(res => res.json())
-          .then(res => {
-            console.log(res);
-            this.setState({
-              data: res,
-              error: null,
-              loading: false
-            });
-          })
-          .catch(error => {
-            this.setState({ error, loading : false });
-          })
+
+      console.log(data);
+      this.setState({
+        data,
+        error: null,
+        loading: false
+      });
+    } catch{
+            this.setState({ error: true, loading : false });
+    }
+
   }
 
   renderTab(tab) {
@@ -95,11 +108,21 @@ class Browse extends Component {
     );
   };
 
+  renderUser(item){
+    const preposition = ["Para", "Por"];
+    if (this.state.active == "My products") return;
+    else return(<Text style={styles.menuText}>{preposition[this.state.iOrTheyNeed]} {item.username}</Text>);
+  }
+
+  open = item => {
+    if (this.state.active == "My products") this.props.navigation.navigate('MyProduct', item);
+      else this.props.navigation.navigate('SingleProduct', item);
+  }
+
   render() {
     const { profile, navigation } = this.props;
     const { categories } = this.state;
     const tabs = ["I need", "They need", "My products"];
-    const preposition = ["Para", "Por"]
     return (
       <Block>
         <Block flex={false} row center space="between" style={styles.header}>
@@ -123,14 +146,13 @@ class Browse extends Component {
               data={this.state.data}
               renderItem={({ item }) => (
                   <ListItem
-                      onPress={() => this.props.navigation.navigate('SingleProduct',
-                      item)}
+                      onPress={() => this.open(item)}
                       title={`${item.title}`}
                       titleStyle={{ fontSize: 16, color:'#ffa500'}}
                       titleContainerStyle = {{ marginLeft: 120 }}
                       subtitle={<View style={styles.subtitleView}>
                         <Text style={styles.menuText}>{item.description}</Text>
-                        <Text style={styles.menuText}>{preposition[this.state.iOrTheyNeed]} {item.username}</Text>
+                        {this.renderUser(item)}
                         <View>
                           <Text style={styles.menuText}>{item.city} - {item.uf} </Text><Text>{this.renderEntrega(item)}</Text>
                         </View>
@@ -169,7 +191,7 @@ class Browse extends Component {
         </ScrollView>
     <TouchableOpacity
     activeOpacity={0.7}
-    onPress={() => navigation.navigate("Plus")}
+    onPress={() => navigation.navigate("Plus", {profile: this.props.profile})}
     style={styles.TouchableOpacityStyle}>
         <Image
     source={require('../assets/plus_icon.png')}
