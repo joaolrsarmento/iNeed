@@ -6,6 +6,12 @@ module.exports = {
 
         return response.json(persons);
     },
+    async clean(request, response){
+        const a = await connection('itemsToGet').delete('*');
+        const b = await connection('itemsToGive').delete('*');
+
+        return response.json(a);
+    },
     async items(request, response){
         const {username} = request.params;
 

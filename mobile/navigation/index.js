@@ -14,6 +14,7 @@ import Settings from "../screens/Settings";
 import Plus from "../screens/Plus";
 import SingleProduct from "../screens/SingleProduct";
 import Chat from "../screens/Chat";
+import MyProduct from "../screens/MyProduct";
 
 import { theme } from "../constants";
 
@@ -29,6 +30,7 @@ const screens = createStackNavigator(
     Settings, 
     SingleProduct,
     Plus,
+      MyProduct,
     Chat
   },
   {

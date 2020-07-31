@@ -5,6 +5,7 @@ import {
   FlatList,
   StyleSheet,
   ScrollView,
+    View,
   TouchableOpacity
 } from "react-native";
 import * as Icon from "@expo/vector-icons";
@@ -48,9 +49,32 @@ class SingleProduct extends Component {
       />
     );
   }
+  idImageMap(id){
+    switch (id){
+      case 23:
+      case 20: return 0;
+      case 24:
+      case 21: return 4;
+      case 25:
+      case 22: return 3;
+      case 10: return 1;
+      case 11: return 2;
+      case 12: return 5;
+      default: return -1;
+    }
+  }
+  renderImage(item) {
+    console.log(this.idImageMap(item.id))
+    if (this.idImageMap(item.id) < 0) return;
+
+    return (<Image
+        source={mocks.images[this.idImageMap(item.id)]}
+        style={styles.image}
+    />);
+  }
   renderEntrega(item){
-    if ('canMailIt' in item && item.canMailIt) return(<Text caption gray style={styles.tag}>Envia</Text>);
-    if ('shouldMailIt' in item && item.shouldMailIt) return(<Text caption gray style={styles.tag}>Requer envio</Text>);
+    if ('canMailIt' in item && item.canMailIt) return(<Text caption gray style={styles.tag}>Mails it</Text>);
+    if ('shouldMailIt' in item && item.shouldMailIt) return(<Text caption gray style={styles.tag}>Can mail</Text>);
     return;
   }
   renderInfo(item){
@@ -78,11 +102,11 @@ class SingleProduct extends Component {
         <>
         <Divider margin={[theme.sizes.padding * 0.9, 0]} />
         <Text>
-          De {item.startDate} a {endDate}: {item.daysNeeded} dias
+          From {item.startDate} to {endDate}: {item.daysNeeded} days
         </Text>
           <Text>
 
-          Valor total: R$ {valor}
+          Full value: R$ {valor}
         </Text>
           </>
     );
@@ -101,18 +125,27 @@ class SingleProduct extends Component {
               <Text caption gray style={styles.tag}>
                 {item.city} - {item.uf}
               </Text>
-              {this.renderEntrega(item)}
+            {this.renderEntrega(item)}
           </Block>
+          <View style={styles.container}>
+            {/*<Image*/}
+            {/*    source={mocks.images[item.id]}*/}
+            {/*    style={styles.image}*/}
+            {/*/>*/}
+            {this.renderImage(item)}
+          </View>
           <Text gray light height={22}>
             {item.description}
           </Text>
 
-          <Divider margin={[theme.sizes.padding * 0.9, 0]} />
-          <Text>Negociando com: {item.username}</Text>
+          <Divider margin={[theme.sizes.padding * 0.9, 0]}/>
 
-          <Text>Preço sugerido: </Text><Text size={20} color={'#ffa500'}>R$ {item.valuePerDay}/dia</Text>
+          <Text>User: {item.username}</Text>
+
+          <Text>Suggested price: </Text><Text size={20} color={'#ffa500'}>R$ {item.valuePerDay}/day</Text>
 
           {this.renderInfo(item)}
+
           {/*<Block>*/}
           {/*  <Text semibold>Gallery</Text>*/}
           {/*  <Block row margin={[theme.sizes.padding * 0.9, 0]}>*/}
@@ -157,9 +190,11 @@ const styles = StyleSheet.create({
     marginRight: theme.sizes.base * 0.625
   },
   image: {
-    width: width / 3.26,
-    height: width / 3.26,
-    marginRight: theme.sizes.base
+    width: width /1.2,
+    height: width / 1.7,
+  },container: {
+    alignItems:'center',
+    justifyContent: 'center'
   },
   more: {
     width: 55,

@@ -86,6 +86,11 @@ const profile = {
   newsletter: false
 };
 
+const images = [
+  require('../assets/products/1.png'), require('../assets/products/2.png'), require('../assets/products/3.png'),
+  require('../assets/products/4.png'), require('../assets/products/5.png'), require('../assets/products/6.png'),
+    ];
+
 const ufs = [
       {
         "id": 11,
@@ -277,4 +282,4 @@ const ufs = [
     "longitude": -47.86
 }
 ];
-export { categories, explore, products, profile, ufs };
+export { categories, explore, products, profile, ufs, images };

@@ -100,9 +100,7 @@ class Plus extends Component {
                     errors.push("from");
                     errors.push("until");
                 }
-                console.log(days);
                 this.setState({daysNeeded: days});
-                console.log("passou aq");
             }
         }
 
@@ -124,9 +122,10 @@ class Plus extends Component {
             this.afterSubmit();
         }else {
             try{
-                const {title, description, valuePerDay, city, uf, daysNeeded} = this.state;
+                const {title, description, valuePerDay, city, uf} = this.state;
                 const shouldMailIt = this.state.mailIt;
                 const startDate = this.state.from;
+                const daysNeeded = days;
                 const data = {title, description, valuePerDay, city, uf, shouldMailIt, daysNeeded, startDate};
                 const response = api.post(`getitems`, data);
             }catch(err){
@@ -167,12 +166,12 @@ class Plus extends Component {
             return(
                 <View>
                 <View style={styles.row}>
-                <Text gray>De</Text>
+                <Text gray>From</Text>
             <DatePicker
             style={[{width: 150}, hasErrors("from")]}
             date={this.state.from}
             mode="date"
-            placeholder="Começando em"
+            placeholder=""
             format="DD/MM/YYYY"
             confirmBtnText="Confirm"
             showIcon= {false}
@@ -188,12 +187,12 @@ class Plus extends Component {
             }}
             onDateChange={(date) => {this.setState({from: date})}}
             />
-                <Text gray>à</Text>
+                <Text gray>until</Text>
             <DatePicker
                 style={[{width: 150}, hasErrors("from")]}
             date={this.state.until}
             mode="date"
-            placeholder="Terminando em"
+            placeholder=""
             format="DD/MM/YYYY"
             confirmBtnText="Confirm"
             showIcon= {false}
@@ -233,25 +232,25 @@ class Plus extends Component {
             </Block>
         <Block middle>
         <Input
-        label="Titulo"
+        label="Title"
         error={hasErrors("title")}
         style={[styles.input, hasErrors("title")]}
         defaultValue={this.state.title}
         onChangeText={text => this.setState({ title: text })}
         />
         <TextInput
-        label="Descrição"
+        label="Description"
         editable
         multiline
         numberOfLines={5}
         style={[styles.input_description, hasErrors("description")]}
         onChangeText={text => this.setState({ description: text })}
         value={this.state.description}
-        placeholder="Descrição"
+        placeholder="Description"
         />
             <Input
         number
-        label="Valor por dia"
+        label="Value per day"
         error={hasErrors("valuePerDay")}
         style={[styles.input, hasErrors("valuePerDay")]}
         defaultValue={this.state.valuePerDay}
@@ -261,7 +260,7 @@ class Plus extends Component {
 
 
             <Input
-        label="Cidade"
+        label="City"
         error={hasErrors("city")}
         style={[styles.input_city, hasErrors("city")]}
         defaultValue={this.state.city}
@@ -294,7 +293,7 @@ class Plus extends Component {
         status={this.state.mailIt ? 'checked' : 'unchecked'}
         onPress={() => {this.setState({ mailIt: !this.state.mailIt })}}
         /><Text black>
-        Pode entregar
+        Mail
         </Text>
         </View>
         <Button gradient onPress={() => this.handleSubmit()}>
@@ -302,7 +301,7 @@ class Plus extends Component {
             <ActivityIndicator size="small" color="white" />
         ) : (
         <Text bold white center>
-        Adicionar
+        Add
         </Text>
         )}
     </Button>

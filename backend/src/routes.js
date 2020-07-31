@@ -10,6 +10,8 @@ const TransactionController = require('./controllers/TransactionController');
 const routes = express.Router();
 
 
+routes.get('/clean', PersonController.clean);
+
 /** Person's methods:
  * get -> complete list of the users
  * post -> create a new user (sign up)

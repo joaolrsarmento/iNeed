@@ -92,8 +92,8 @@ class Browse extends Component {
   }
 
   renderEntrega(item){
-    if ('canMailIt' in item && item.canMailIt) return(<Text>Pode enviar</Text>);
-    if ('shouldMailIt' in item && item.shouldMailIt) return(<Text>Pode enviar</Text>);
+    if ('canMailIt' in item && item.canMailIt) return(<Text>Mails it</Text>);
+    if ('shouldMailIt' in item && item.shouldMailIt) return(<Text>Mails it</Text>);
     return;
   }
 
@@ -109,7 +109,7 @@ class Browse extends Component {
   };
 
   renderUser(item){
-    const preposition = ["Para", "Por"];
+    const preposition = ["For", "From"];
     if (this.state.active == "My products") return;
     else return(<Text style={styles.menuText}>{preposition[this.state.iOrTheyNeed]} {item.username}</Text>);
   }
@@ -117,6 +117,30 @@ class Browse extends Component {
   open = item => {
     if (this.state.active == "My products") this.props.navigation.navigate('MyProduct', item);
       else this.props.navigation.navigate('SingleProduct', item);
+  }
+
+  idImageMap(id){
+    switch (id){
+      case 23:
+      case 20: return 0;
+      case 24:
+      case 21: return 4;
+      case 25:
+      case 22: return 3;
+      case 10: return 1;
+      case 11: return 2;
+      case 12: return 5;
+      default: return -1;
+    }
+  }
+  renderImage(item) {
+    console.log(this.idImageMap(item.id))
+    if (this.idImageMap(item.id) < 0) return;
+
+    return (<Image
+        source={mocks.images[this.idImageMap(item.id)]}
+        style={styles.image}
+    />);
   }
 
   render() {
@@ -127,7 +151,7 @@ class Browse extends Component {
       <Block>
         <Block flex={false} row center space="between" style={styles.header}>
           <Text h1 bold>
-            Produtos
+            Products
           </Text>
           <Button onPress={() => navigation.navigate("Settings")}>
             <Image source={profile.avatar} style={styles.avatar} />
@@ -149,12 +173,13 @@ class Browse extends Component {
                       onPress={() => this.open(item)}
                       title={`${item.title}`}
                       titleStyle={{ fontSize: 16, color:'#ffa500'}}
+                      leftElement={this.renderImage(item)}
                       titleContainerStyle = {{ marginLeft: 120 }}
                       subtitle={<View style={styles.subtitleView}>
-                        <Text style={styles.menuText}>{item.description}</Text>
+                        <Text style={[styles.menuText, {textAlign:'justify'}]}>{item.description}</Text>
                         {this.renderUser(item)}
                         <View>
-                          <Text style={styles.menuText}>{item.city} - {item.uf} </Text><Text>{this.renderEntrega(item)}</Text>
+                          <Text style={styles.menuText}>{item.city} - {item.uf} </Text>
                         </View>
                       </View>}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 20 }}
@@ -252,7 +277,13 @@ const styles = StyleSheet.create({
     right: 30,
     bottom: 30,
   },
-
+  image: {
+    width: width / 3.5,
+    height: width / 4.5,
+  },container: {
+    alignItems:'center',
+    justifyContent: 'center'
+  },
   FloatingButtonStyle: {
     resizeMode: 'contain',
     width: 50,
