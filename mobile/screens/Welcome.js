@@ -244,7 +244,7 @@ class Welcome extends Component {
               Login
             </Text>
           </Button>
-          <Button shadow onPress={() => navigation.navigate("SignUp")}>
+          <Button shadow onPress={() => navigation.navigate("Chat")}>
             <Text center semibold>
               Signup
             </Text>

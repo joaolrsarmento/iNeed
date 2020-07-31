@@ -4,7 +4,8 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   StyleSheet,
-  Image
+  Image,
+  Alert
 } from "react-native";
 
 import { Button, Block, Input, Text } from "../components";
@@ -14,9 +15,10 @@ import logoComplete from '../assets/images/logoComplete.png';
 
 import api from '../services/api';
 
-const VALID_EMAIL = "contact@react-ui-kit.com";
-const VALID_PASSWORD = "subscribe";
-
+const users = {
+  'emails': ['alexandremaranhao@ita.br', 'joaosarmento@ita.br', 'lucapires@ita.br', 'lucasramos@ita.br', 'regismiller@ita.br', 'caiocosta@ita.br'],
+  'passwords': ['maranhao', 'sarmento', 'pires', 'ramos', 'miller', 'costa']
+}
 export default class Login extends Component {
   state = {
     email: null,
@@ -34,10 +36,10 @@ export default class Login extends Component {
     this.setState({ loading: true });
 
     // check with backend API or with some static data
-    if (email !== VALID_EMAIL) {
+    if (!users['emails'].includes(email)) {
       errors.push("email");
     }
-    if (password !== VALID_PASSWORD) {
+    if (!users['passwords'].includes(password)) {
       errors.push("password");
     }
 
@@ -45,6 +47,8 @@ export default class Login extends Component {
 
     if (!errors.length) {
       navigation.navigate("Browse");
+    }else{
+      Alert.alert("Invalid email or password. Try again.")
     }
   }
 
