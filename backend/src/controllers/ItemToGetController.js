@@ -37,15 +37,43 @@ module.exports = {
 
         return response.json({ id });
     },
+    async update(request, response) {
+        const username = request.headers.authorization;
+        const {item_id} = request.params;
+        const {
+            title,
+            description,
+            valuePerDay,
+            daysNeeded,
+            startDate,
+            shouldMailIt,
+            city,
+            uf
+        } = request.body;
+
+        const [id] = await connection('itemsToGet')
+            .update({
+                title,
+                description,
+                valuePerDay,
+                daysNeeded,
+                startDate,
+                shouldMailIt,
+                city,
+                uf,
+                username
+            }).where('id', item_id);
+
+        return response.json({ id });
+    },
     async delete(request, response) {
         const { id } = request.params;
         const username = request.headers.authorization;
-
         const item = await connection('itemsToGet')
             .where('id', id)
             .select('username')
             .first();
-
+        
         if (item.username !== username) {
             return response.status(401).json({
                 error: 'No authorization'

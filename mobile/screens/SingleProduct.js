@@ -54,13 +54,31 @@ class SingleProduct extends Component {
     return;
   }
   renderInfo(item){
-    const valor = item.daysNeeded * item.valuePerDay;
     if ('canMailIt' in item) return;
+
+    const valor = item.daysNeeded * item.valuePerDay;
+    var partsD1 = item.startDate.split('/');
+    var d1 = new Date(partsD1[2], partsD1[1] - 1, partsD1[0]);
+    var endDateObj = d1 + item.daysNeeded*(1000 * 60 * 60 * 24);
+    console.log(endDateObj);
+    d1.setDate(d1.getDate() + item.daysNeeded);
+
+    var mes = d1.getMonth();
+    var dia = d1.getDate();
+    if(Number(mes)<10){
+      mes = '0' + mes;
+    }
+    if(Number(dia)<10){
+      dia = '0' + dia;
+    }
+
+    var endDate = dia + '/' + mes + '/' +d1.getFullYear();
+
     if ('shouldMailIt' in item) return(
         <>
         <Divider margin={[theme.sizes.padding * 0.9, 0]} />
         <Text>
-          De {item.startDate}: {item.daysNeeded} dias
+          De {item.startDate} a {endDate}: {item.daysNeeded} dias
         </Text>
           <Text>
 

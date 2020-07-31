@@ -14,11 +14,14 @@ const routes = express.Router();
  * get -> complete list of the users
  * post -> create a new user (sign up)
  * delete -> delete a user (delete account)
+ * get username -> get all items from user
  */
 
 routes.get('/persons', PersonController.index);
 routes.post('/persons', PersonController.create);
 routes.delete('/persons/:username', PersonController.delete);
+routes.get('/persons/:username', PersonController.items);
+
 
 /** Login's method:
  * post -> try to login

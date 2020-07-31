@@ -32,6 +32,30 @@ module.exports = {
             });
 
         return response.json({ id });
+    },async update(request, response) {
+        const username = request.headers.authorization;
+        const {item_id} = request.params;
+        const {
+            title,
+            description,
+            valuePerDay,
+            canMailIt,
+            city,
+            uf
+        } = request.body;
+
+        const [id] = await connection('itemsToGet')
+            .update({
+                title,
+                description,
+                valuePerDay,
+                city,
+                uf,
+                canMailIt,
+                username
+            }).where('id', item_id);
+
+        return response.json({ id });
     },
     async delete(request, response) {
         const { id } = request.params;

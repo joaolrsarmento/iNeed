@@ -23,6 +23,7 @@ import { Checkbox } from 'react-native-paper';
 import RNPicker from "rn-modal-picker";
 import CheckBox from '@react-native-community/checkbox';
 import DatePicker from 'react-native-datepicker';
+import api from "../services/api";
 
 const { width, height } = Dimensions.get("window");
 const tabs = ["I need", "They need"];
@@ -75,7 +76,8 @@ class Plus extends Component {
         }
     }
     handleSubmit() {
-        const { navigation } = this.props;
+        const { profile, navigation } = this.props;
+        console.log(profile)
         Keyboard.dismiss();
         this.setState({ loading: true });
         const errors = [];
@@ -111,45 +113,26 @@ class Plus extends Component {
         this.setState({errors:errors});
         console.log (this.state.daysNeeded);
         if(this.state.iOrThey) {
-            const url = 'http://192.168.43.23:3333/giveitems/'
-            var object = {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "title": this.state.title,
-                    "description": this.state.description,
-                    "valuePerDay": this.state.valuePerDay,
-                    "city": this.state.city,
-                    "uf": this.state.uf,
-                    "canMailIt": this.state.mailIt,
-                })
-            };
-            console.log(object)
-            return fetch(url, object).then(response => response.json()).then(this.afterSubmit);
+            try{
+                const {title, description, valuePerDay, city, uf} = this.state;
+                const canMailIt = this.state.mailIt;
+                const data = {title, description, valuePerDay, city, uf, canMailIt};
+                const response = api.post(`giveitems`, data);
+            }catch(err){
+                Alert.alert("Erro!\nTente novamente mais tarde.")
+            }
+            this.afterSubmit();
         }else {
-            const url = 'http://192.168.43.23:3333/getitems/'
-            var object = {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "title": this.state.title,
-                    "description": this.state.description,
-                    "shouldMailIt": this.state.mailIt,
-                    "valuePerDay": this.state.valuePerDay,
-                    "city": this.state.city,
-                    "uf": this.state.uf,
-                    "startDate": this.state.from,
-                    "daysNeeded": days
-                })
-            };
-            console.log(object)
-            return fetch(url, object).then(response => console.log(response.json())).then(this.afterSubmit);
+            try{
+                const {title, description, valuePerDay, city, uf, daysNeeded} = this.state;
+                const shouldMailIt = this.state.mailIt;
+                const startDate = this.state.from;
+                const data = {title, description, valuePerDay, city, uf, shouldMailIt, daysNeeded, startDate};
+                const response = api.post(`getitems`, data);
+            }catch(err){
+                Alert.alert("Erro!\nTente novamente mais tarde.")
+            }
+            this.afterSubmit();
         }
     }
 
